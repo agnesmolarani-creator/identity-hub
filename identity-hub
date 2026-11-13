@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff0f5">
+
+  <title>Identity Hub 🎀</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="header">
+      <div>
+        <h1>identity hub. 🎀</h1>
+        <p>your little identity space</p>
+      </div>
+      <div class="avatar">♡</div>
+    </header>
+
+    <main>
+
+      <section id="home" class="page active">
+
+        <div class="welcome">
+          <span class="welcome-small">WELCOME TO IDENTITY HUB</span>
+          <h2>Hello, <span id="username">cutie</span>! ♡</h2>
+          <p>Let's create something lovely today.</p>
+          <div class="welcome-decoration">୨୧</div>
+        </div>
+
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="search" type="text" placeholder="Search your favorite tools...">
+        </div>
+
+        <div class="section-heading">
+          <h3>Popular tools</h3>
+          <span>✧ explore ✧</span>
+        </div>
+
+        <div class="tool-grid">
+
+          <button class="tool-card" data-tool="username">
+            <span class="tool-icon">＠</span>
+            <strong>Username</strong>
+            <small>Find your identity</small>
+          </button>
+
+          <button class="tool-card" data-tool="bio">
+            <span class="tool-icon">♡</span>
+            <strong>Bio Maker</strong>
+            <small>Create your bio</small>
+          </button>
+
+          <button class="tool-card" data-tool="nickname">
+            <span class="tool-icon">୨୧</span>
+            <strong>Nickname</strong>
+            <small>Find cute names</small>
+          </button>
+
+          <button class="tool-card" data-tool="font">
+            <span class="tool-icon">Aa</span>
+            <strong>Font Style</strong>
+            <small>Style your text</small>
+          </button>
+
+          <button class="tool-card" data-tool="symbol">
+            <span class="tool-icon">✧</span>
+            <strong>Symbols</strong>
+            <small>Pretty decorations</small>
+          </button>
+
+          <button class="tool-card" data-tool="kaomoji">
+            <span class="tool-icon">૮₍ ˶ᵔ ᵕ ᵔ˶ ₎ა</span>
+            <strong>Kaomoji</strong>
+            <small>Cute expressions</small>
+          </button>
+
+        </div>
+
+        <div class="quote">
+          <p>“Be your own kind of beautiful.”</p>
+          <span>made with love ♡</span>
+        </div>
+
+      </section>
+
+      <section id="tools" class="page">
+        <h2>Explore Tools ♡</h2>
+        <p class="subtitle">Everything you need in one place.</p>
+
+        <div class="tool-grid">
+          <button class="tool-card" data-tool="username">
+            <span class="tool-icon">＠</span>
+            <strong>Username Generator</strong>
+          </button>
+          <button class="tool-card" data-tool="bio">
+            <span class="tool-icon">♡</span>
+            <strong>Bio Generator</strong>
+          </button>
+          <button class="tool-card" data-tool="nickname">
+            <span class="tool-icon">୨୧</span>
+            <strong>Nickname Maker</strong>
+          </button>
+          <button class="tool-card" data-tool="font">
+            <span class="tool-icon">Aa</span>
+            <strong>Font Changer</strong>
+          </button>
+          <button class="tool-card" data-tool="symbol">
+            <span class="tool-icon">✧</span>
+            <strong>Symbol Library</strong>
+          </button>
+          <button class="tool-card" data-tool="kaomoji">
+            <span class="tool-icon">૮₍ ˶ᵔ ᵕ ᵔ˶ ₎ა</span>
+            <strong>Kaomoji</strong>
+          </button>
+        </div>
+      </section>
+
+      <section id="favorites" class="page">
+        <h2>My Favorites ♡</h2>
+        <p class="subtitle">Your lovely saved creations.</p>
+        <div id="favorite-list" class="result-list"></div>
+      </section>
+
+      <section id="profile" class="page">
+        <div class="profile-card">
+          <div class="profile-avatar">🎀</div>
+          <h2 id="profile-name">Cutie User</h2>
+          <p id="profile-id">Identity Hub Member</p>
+          <div class="profile-stat">
+            <strong id="favorite-count">0</strong>
+            <span>Favorites</span>
+          </div>
+        </div>
+        <p class="subtitle">your personal little space ♡</p>
+      </section>
+
+      <section id="generator" class="page">
+        <button id="back-home" class="back-button">← Back</button>
+        <div id="generator-content"></div>
+      </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-page="home">
+        <span>⌂</span>
+        <small>Home</small>
+      </button>
+      <button class="nav-item" data-page="tools">
+        <span>✧</span>
+        <small>Tools</small>
+      </button>
+      <button class="nav-item" data-page="favorites">
+        <span>♡</span>
+        <small>Saved</small>
+      </button>
+      <button class="nav-item" data-page="profile">
+        <span>♙</span>
+        <small>Profile</small>
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
