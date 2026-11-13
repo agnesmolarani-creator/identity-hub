@@ -397,6 +397,136 @@ h2 {
   font-size: 12px;
 }
 
+/* TELEGRAM IDENTITY PROFILE */
+
+.telegram-identity-card {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fff0f6, #ffe4ef);
+  border: 1px solid #ffd2e3;
+  box-shadow: 0 5px 18px rgba(255, 150, 190, 0.12);
+}
+
+.telegram-identity-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.telegram-identity-heading h3 {
+  margin: 0;
+  color: #bd648a;
+  font-size: 16px;
+}
+
+#telegram-identity-status {
+  font-size: 11px;
+  color: #b76b8b;
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 20px;
+}
+
+.telegram-user-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 17px;
+}
+
+.telegram-avatar-wrapper {
+  width: 65px;
+  height: 65px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #ffd9e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#telegram-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#telegram-avatar-fallback {
+  font-size: 28px;
+}
+
+.telegram-user-info {
+  min-width: 0;
+}
+
+.telegram-user-info h3 {
+  margin: 0 0 5px;
+  color: #a94f76;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.telegram-user-info p {
+  margin: 3px 0;
+  color: #b77b94;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.telegram-details {
+  margin-top: 15px;
+  padding: 13px;
+  background: rgba(255,255,255,0.65);
+  border-radius: 15px;
+}
+
+.telegram-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f9dce8;
+  font-size: 12px;
+}
+
+.telegram-detail-row:last-child {
+  border-bottom: none;
+}
+
+.telegram-detail-row span:first-child {
+  color: #b77b94;
+}
+
+.telegram-detail-row span:last-child {
+  color: #a94f76;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+#telegram-profile-link {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  background: #f4a8c6;
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+#telegram-identity-message {
+  margin-top: 12px;
+  color: #b77b94;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
 @media (max-width: 350px) {
   .app {
     padding-left: 12px;
@@ -410,4 +540,4 @@ h2 {
   .tool-card {
     padding: 11px;
   }
-  }
+}
