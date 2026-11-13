@@ -1,27 +1,140 @@
 
+/* =====================================
+   IDENTITY HUB - TELEGRAM MINI APP
+===================================== */
+
+// TELEGRAM INITIALIZATION
+
 const tg = window.Telegram?.WebApp;
 
 if (tg) {
   tg.ready();
   tg.expand();
-  tg.setHeaderColor("#fff0f5");
-  tg.setBackgroundColor("#fff0f5");
+
+  try {
+    tg.setHeaderColor("#fff0f5");
+    tg.setBackgroundColor("#fff0f5");
+  } catch (error) {
+    console.log("Telegram theme setting unavailable.");
+  }
 }
 
-// USER PROFILE
-const telegramUser = tg?.initDataUnsafe?.user;
+// HELPER
 
-const displayName = telegramUser?.first_name || "cutie";
+function setText(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.textContent = value;
+}
 
-document.getElementById("username").textContent = displayName;
-document.getElementById("profile-name").textContent = displayName;
+// TELEGRAM PROFILE SYNC
 
-if (telegramUser?.id) {
-  document.getElementById("profile-id").textContent =
-    "Telegram ID: " + telegramUser.id;
+function syncTelegramProfile() {
+  const user = tg?.initDataUnsafe?.user;
+
+  const status = document.getElementById(
+    "telegram-identity-status"
+  );
+
+  const message = document.getElementById(
+    "telegram-identity-message"
+  );
+
+  const avatar = document.getElementById("telegram-avatar");
+  const fallback = document.getElementById(
+    "telegram-avatar-fallback"
+  );
+
+  const profileLink = document.getElementById(
+    "telegram-profile-link"
+  );
+
+  if (!user) {
+    if (status) status.textContent = "Not connected";
+
+    if (message) {
+      message.textContent =
+        "Open Identity Hub through Telegram to see your Telegram profile ♡";
+    }
+
+    if (profileLink) profileLink.style.display = "none";
+
+    setText("telegram-full-name", "Not connected");
+    setText("telegram-username", "@not_available");
+    setText("telegram-first-name", "-");
+    setText("telegram-last-name", "-");
+    setText("telegram-user-id", "-");
+    setText("telegram-language", "-");
+
+    return;
+  }
+
+  const firstName = user.first_name || "";
+  const lastName = user.last_name || "";
+  const fullName = [firstName, lastName]
+    .filter(Boolean)
+    .join(" ") || "Telegram User";
+
+  const username = user.username
+    ? "@" + user.username
+    : "No username";
+
+  // Update existing Identity Hub profile
+  setText("username", firstName || "cutie");
+  setText("profile-name", fullName);
+
+  if (user.id) {
+    setText("profile-id", "Telegram ID: " + user.id);
+  }
+
+  // Update Telegram identity card
+  if (status) status.textContent = "Connected ♡";
+
+  setText("telegram-full-name", fullName);
+  setText("telegram-username", username);
+  setText("telegram-first-name", firstName || "-");
+  setText("telegram-last-name", lastName || "-");
+  setText("telegram-user-id", user.id || "-");
+  setText("telegram-language", user.language_code || "-");
+
+  // Profile photo
+  if (user.photo_url && avatar) {
+    avatar.src = user.photo_url;
+    avatar.alt = fullName;
+
+    avatar.style.display = "block";
+
+    if (fallback) fallback.style.display = "none";
+
+    avatar.onerror = () => {
+      avatar.style.display = "none";
+      if (fallback) fallback.style.display = "block";
+    };
+  } else {
+    if (avatar) avatar.style.display = "none";
+    if (fallback) fallback.style.display = "block";
+  }
+
+  // Telegram profile link
+  if (profileLink) {
+    if (user.username) {
+      profileLink.href = "https://t.me/" + encodeURIComponent(
+        user.username
+      );
+
+      profileLink.style.display = "inline-block";
+    } else {
+      profileLink.style.display = "none";
+    }
+  }
+
+  if (message) {
+    message.textContent =
+      "Your Telegram profile information is displayed automatically ♡";
+  }
 }
 
 // DATA
+
 const usernameIdeas = [
   "pinkcloud", "softie", "moonberry",
   "lovelyday", "peachy", "milkyrose",
@@ -66,13 +179,24 @@ const kaomojis = [
   "૮₍ ˃ ⤙ ˂ ₎ა"
 ];
 
-let favorites = JSON.parse(
-  localStorage.getItem("identityFavorites") || "[]"
-);
+// FAVORITES
+
+let favorites = [];
+
+try {
+  favorites = JSON.parse(
+    localStorage.getItem("identityFavorites") || "[]"
+  );
+
+  if (!Array.isArray(favorites)) favorites = [];
+} catch (error) {
+  favorites = [];
+}
 
 let previousPage = "home";
 
 // NAVIGATION
+
 function showPage(page) {
   document.querySelectorAll(".page").forEach(p => {
     p.classList.remove("active");
@@ -90,7 +214,11 @@ function showPage(page) {
   });
 
   if (page === "favorites") renderFavorites();
-  if (page === "profile") updateProfile();
+
+  if (page === "profile") {
+    updateProfile();
+    syncTelegramProfile();
+  }
 }
 
 document.querySelectorAll(".nav-item").forEach(btn => {
@@ -100,21 +228,25 @@ document.querySelectorAll(".nav-item").forEach(btn => {
 });
 
 // OPEN TOOLS
+
 document.querySelectorAll("[data-tool]").forEach(btn => {
   btn.addEventListener("click", () => {
     openGenerator(btn.dataset.tool);
   });
 });
 
-document.getElementById("back-home").addEventListener("click", () => {
+document.getElementById("back-home")?.addEventListener("click", () => {
   showPage(previousPage);
 });
 
 // GENERATOR
+
 function openGenerator(type) {
   const current = document.querySelector(".page.active");
 
-  previousPage = current?.id === "tools" ? "tools" : "home";
+  previousPage = current?.id === "tools"
+    ? "tools"
+    : "home";
 
   showPage("generator");
 
@@ -191,11 +323,16 @@ function openGenerator(type) {
 }
 
 // GENERATE RESULTS
+
 function generateResults(type) {
   const input = document.getElementById("generator-input");
   const keyword = input?.value.trim() || "";
 
-  if (input && !keyword && ["username", "bio", "nickname"].includes(type)) {
+  if (
+    input &&
+    !keyword &&
+    ["username", "bio", "nickname"].includes(type)
+  ) {
     input.focus();
     input.placeholder = "Please enter a name first ♡";
     return;
@@ -228,7 +365,9 @@ function generateResults(type) {
   if (type === "nickname") {
     const first = keyword.charAt(0).toUpperCase();
 
-    results = nicknameIdeas.map(name => first + name.slice(1));
+    results = nicknameIdeas.map(name =>
+      first + name.slice(1)
+    );
 
     results = [
       first + "i",
@@ -266,6 +405,7 @@ function generateResults(type) {
 }
 
 // FONT CHANGER
+
 function makeFonts(text) {
   const styles = [
     0x1D5D4,
@@ -277,7 +417,7 @@ function makeFonts(text) {
   const normal = "abcdefghijklmnopqrstuvwxyz";
   const output = [];
 
-  styles.forEach((start, index) => {
+  styles.forEach(start => {
     let converted = "";
 
     for (const char of text.toLowerCase()) {
@@ -298,8 +438,11 @@ function makeFonts(text) {
 }
 
 // DISPLAY RESULTS
+
 function renderResults(results) {
   const container = document.getElementById("results");
+
+  if (!container) return;
 
   container.innerHTML = "";
 
@@ -335,6 +478,7 @@ function renderResults(results) {
 }
 
 // COPY
+
 async function copyText(value) {
   try {
     await navigator.clipboard.writeText(value);
@@ -345,6 +489,7 @@ async function copyText(value) {
 }
 
 // FAVORITES
+
 function saveFavorite(value) {
   if (favorites.includes(value)) {
     alert("Already saved! ♡");
@@ -364,6 +509,8 @@ function saveFavorite(value) {
 
 function renderFavorites() {
   const list = document.getElementById("favorite-list");
+
+  if (!list) return;
 
   list.innerHTML = "";
 
@@ -389,6 +536,7 @@ function renderFavorites() {
 
     const remove = document.createElement("button");
     remove.textContent = "✕";
+
     remove.onclick = () => {
       favorites.splice(index, 1);
 
@@ -409,13 +557,16 @@ function renderFavorites() {
 }
 
 // PROFILE
+
 function updateProfile() {
-  document.getElementById("favorite-count").textContent =
-    favorites.length;
+  setText("favorite-count", favorites.length);
 }
 
 // SEARCH
-document.getElementById("search").addEventListener("input", event => {
+
+const searchInput = document.getElementById("search");
+
+searchInput?.addEventListener("input", event => {
   const query = event.target.value.toLowerCase();
 
   document.querySelectorAll("#home .tool-card").forEach(card => {
@@ -426,5 +577,7 @@ document.getElementById("search").addEventListener("input", event => {
 });
 
 // INITIALIZE
+
 updateProfile();
-      
+syncTelegramProfile();
+    
